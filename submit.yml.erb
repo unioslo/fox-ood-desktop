@@ -21,7 +21,7 @@ batch_connect:
     <%- end -%> 
 
 script:
-  job_name: "OOD Desktop"
+  job_name: "OOD Fiji"
   native: [
             "-c", "<%= ec_cpus.blank?  ? 1 : ec_cpus.to_i %>",
            <%- if ec_gpus.to_i > 0 -%>

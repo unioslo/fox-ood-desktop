@@ -1,6 +1,6 @@
-# Fox Desktop for Open OnDemand
+# Fiji (Fiji Is Just ImageJ) for Open OnDemand
 
-Apptainer based desktop app for Open Ondemand, as used on the Fox HPC cluster at University of Oslo.
+Apptainer based Fiji app for Open Ondemand, as used on the Fox HPC cluster at University of Oslo.
 
 ## Notes:
 

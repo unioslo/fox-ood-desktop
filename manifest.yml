@@ -1,10 +1,9 @@
 ---
-name: Fox Desktop
+name: Fiji
 category: Interactive Apps
 subcategory: Desktops
 role: batch_connect
 description: |
-        Launches a lightweight XFCE desktop environment, hosted in a container.
-        GPU rendering is enabled. To use, start your program with `vglrun -d egl <application>`.
+  Fiji is an image processing package — a "batteries-included" distribution of ImageJ, bundling many plugins which facilitate scientific image analysis.
 tile:
-  sub_caption: "XFCE desktop"
+  sub_caption: "ImageJ image analysis including many popular plugins"
