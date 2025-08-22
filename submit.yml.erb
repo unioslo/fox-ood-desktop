@@ -32,11 +32,9 @@ script:
                 <%- when 'A100-40' -%>
                   "--partition=accel",
                   "--gres=gpu:a100:<%= ec_gpus.to_i %>",
-                  "--exclude=gpu-[7-9]",
                 <%- when 'A100-80' -%>
                   "--partition=accel",
-                  "--gres=gpu:a100:<%= ec_gpus.to_i %>",
-                  "--exclude=gpu-[1-2,13]",
+                  "--gres=gpu:a100_80:<%= ec_gpus.to_i %>",
                 <% when 'A40' -%>
                   "--partition=accel",
                   "--gres=gpu:a40",
