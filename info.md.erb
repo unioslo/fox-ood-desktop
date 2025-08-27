@@ -1,0 +1,61 @@
+<%-
+require 'open3'
+
+class CheckJob
+
+  @cache = ActiveSupport::Cache::FileStore.new(
+    File.join(ENV["HOME"], "ondemand", ".cache"),
+    expires_in: 60.seconds
+  )
+
+  def self.CheckJob(job_id)
+    begin
+      # get job info from squeue
+      script = "squeue -j " + job_id + " -ho '%T;%.0r;%S'"
+      o, status = Open3.capture2e(script)
+      tmp_output = o.split("\n")
+      output = tmp_output[0].split(';')
+      return output
+    end
+  end
+
+  def self.GetJobState(job_id)
+    begin
+      @GetJobState = @cache.fetch(job_id, race_condition_ttl: 30.seconds) do
+        self.CheckJob(job_id)
+      end
+      return @GetJobState
+    end
+  end
+end
+
+def valid_time_string?(time_string)
+  begin
+    Time.parse(time_string)
+    true
+  rescue ArgumentError
+    false
+  end
+end
+
+-%>
+
+<%- if queued? -%>
+
+<%- reason = CheckJob.GetJobState(job_id)[1]
+    reason = reason.split(",") -%>
+
+> **Job Status:** <%= CheckJob.GetJobState(job_id)[0] %> (<%= reason[0] %>)
+
+> For information on job states and reasons, see the <a href="https://slurm.schedmd.com/squeue.html#SECTION_JOB-STATE-CODES" target="_blank">Slurm documentation</a>
+
+> **Estimated start time:**
+<%- if valid_time_string?(CheckJob.GetJobState(job_id)[2]) -%>
+<%= Time.parse(CheckJob.GetJobState(job_id)[2]).strftime("%B %d, %Y at %I:%M %p") %>
+<%- else -%>
+Unknown
+<%- end -%>
+
+> Predicted start times are often inaccurate or unavailable; jobs may start earlier
+
+<%- end -%>
